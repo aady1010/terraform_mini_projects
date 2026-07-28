@@ -81,3 +81,13 @@ resource "aws_ecs_service" "app" {
     assign_public_ip = true
   }
 }
+
+
+resource "aws_ecr_repository" "node_api" {
+  name                 = "devops-node-api"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
