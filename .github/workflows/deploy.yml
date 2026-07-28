@@ -26,6 +26,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Terraform Init
+        working-directory: ./terra/aws-3-tier-infra
         run: terraform init
 
       - name: Terraform Plan
