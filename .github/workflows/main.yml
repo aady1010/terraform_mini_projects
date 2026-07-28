@@ -43,17 +43,14 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-      - name: Download Active Task Definition from ECS
-        run: |
-          aws ecs describe-task-definition --task-definition node-api-task --query taskDefinition > task-definition.json || echo "{}" > task-definition.json
+       
       - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
+        id: render-node-app
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: node-api-container
-          image: ${{ steps.build-image.outputs.image }}
+         task-definition: terra/aws-3-tier-infra/task-definition.json
+         container-name: node-api-container
+         image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
