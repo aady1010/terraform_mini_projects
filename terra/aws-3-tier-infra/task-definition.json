@@ -4,6 +4,7 @@
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
   "memory": "512",
+  "executionRoleArn": "arn:aws:iam::104760031249:role/ecs-execution-role",
   "containerDefinitions": [
     {
       "name": "node-api-container",
