@@ -1,6 +1,6 @@
 # 1. AWS ECR Repository to store Docker images
 resource "aws_ecr_repository" "app_repo" {
-  name                 = "devops-node-api"
+  name                 = "devops-node-api-v2"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
