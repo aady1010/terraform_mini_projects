@@ -43,17 +43,22 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+          # Step 1: Inject your new Docker image tag into your task definition template
       - name: Render Amazon ECS task definition
-        id: render-node-app
+        id: render-web-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-         task-definition: ./terra/aws-3-tier-infra/task-definition.json
-         container-name: node-api-container
-         image: ${{ steps.build-image.outputs.image }}
+         task-definition: task-definition.json  # Path to your template JSON file in your repo
+         container-name: devops-node-api          # Container name defined inside task-definition.json
+         image: ${{ steps.build-image.outputs.image }} # Your updated ECR image URI
+
+# Step 2: Deploy the newly rendered task definition to ECS
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
+         task-definition: ${{ steps.render-web-container.outputs.task-definition }} # <--- THIS IS WHAT WAS MISSING
+         service: your-ecs-service-name
+         cluster: your-ecs-cluster-name
+         wait-for-service-stability: true
+      
