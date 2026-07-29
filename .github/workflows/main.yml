@@ -49,7 +49,7 @@ jobs:
         id: render-web-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-         task-definition: task-definition.json  # Path to your template JSON file in your repo
+         task-definition: terra/aws-3-tier-infra/task-definition.json  # Path to your template JSON file in your repo
          container-name: devops-node-api          # Container name defined inside task-definition.json
          image: ${{ steps.build-image.outputs.image }} # Your updated ECR image URI
 
