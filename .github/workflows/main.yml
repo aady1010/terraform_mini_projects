@@ -58,7 +58,7 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
          task-definition: ${{ steps.render-web-container.outputs.task-definition }} # <--- THIS IS WHAT WAS MISSING
-         service: your-ecs-service-name
-         cluster: your-ecs-cluster-name
+         service: devops-ecs-service
+         cluster: devops-ecs-cluster
          wait-for-service-stability: true
       
